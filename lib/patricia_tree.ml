@@ -1,0 +1,42 @@
+(* Implement patricia tree which is based on Fadt Mergeable Integer Maps  *)
+
+
+type node =
+  | Empty
+  | Leaf of int
+  | Branch of int * int * node * node
+
+
+let lowest_bit x = x land (-x)
+
+let zero_bit k m = (k land m) == 0
+
+let branching_bit p0 p1 = lowest_bit (p0 lxor p1)
+
+let mask p m = p land (m - 1)
+
+let match_prefix k p m = (mask k m) == p
+
+let join (p0, t0, p1, t1) = 
+  let m = branching_bit p0 p1 in
+  if zero_bit p0 m then 
+    Branch (mask p0 m, m, t0, t1)
+  else
+    Branch (mask p0 m, m, t1, t0) 
+
+
+let add k node = 
+  let rec insert = function
+    | Empty -> Leaf k
+    | Leaf i as node ->
+      if i == k then node else join (k, Leaf k, i, node)
+    | Branch (p, m, t0, t1) as node ->
+      if match_prefix k p m then
+        if zero_bit k m then
+          Branch (p, m, insert t0, t1)
+        else 
+          Branch (p, m, t0, insert t1)
+      else
+        join (k, Leaf k, p, node) 
+  in 
+  insert node
