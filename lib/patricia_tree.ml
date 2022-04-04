@@ -1,4 +1,4 @@
-(* Implement patricia tree which is based on Fadt Mergeable Integer Maps  *)
+(* Implement patricia tree which is based on Fast Mergeable Integer Maps Paper  *)
 
 
 type node =
@@ -24,7 +24,7 @@ let join (p0, t0, p1, t1) =
   else
     Branch (mask p0 m, m, t1, t0) 
 
-
+(* Add new element k *)
 let add k node = 
   let rec insert = function
     | Empty -> Leaf k
@@ -40,3 +40,34 @@ let add k node =
         join (k, Leaf k, p, node) 
   in 
   insert node
+
+
+let rec member k = function
+  | Empty -> false
+  | Leaf i -> k == i
+  | Branch (_, m, l, r) -> member k (if zero_bit k m then l else r)
+
+(* Find element k *)
+let find k node = if member k node then k else -1
+
+let branch = function
+  | (_, _, Empty, node) -> node
+  | (_, _, node, Empty) -> node
+  | (p, m, t0, t1) -> Branch (p, m, t0, t1)
+
+(* Remove element k *)
+let remove k node = 
+  let rec remove = function
+    | Empty -> Empty
+    | Leaf i as node -> if i == k then Empty else node
+    | Branch (p, m, t0, t1) -> 
+      if match_prefix k p m then
+        if zero_bit k m then
+          branch (p, m, remove t0, t1)
+        else 
+          branch (p, m, t0, remove t1)
+      else
+        node
+  in
+    remove node  
+          

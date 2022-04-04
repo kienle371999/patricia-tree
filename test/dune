@@ -1,2 +1,4 @@
 (test
- (name patricia_tree))
+ (name patricia_tree)
+ (libraries lib_patricia_tree alcotest))
+

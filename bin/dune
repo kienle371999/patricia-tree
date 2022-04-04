@@ -1,4 +1,4 @@
 (executable
  (public_name patricia_tree)
  (name main)
- (libraries patricia_tree))
+ (libraries lib_patricia_tree))
