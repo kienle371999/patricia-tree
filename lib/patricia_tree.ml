@@ -1,5 +1,5 @@
-(* Implement patricia tree which is based on Fast Mergeable Integer Maps Paper  *)
-
+(* Implement patricia tree which is based on Fast Mergeable Integer Maps Paper. 
+    This impementation is applied on unsigened integer  *)
 
 type node =
   | Empty
