@@ -1,6 +1,6 @@
 # Patricia-tree
 
-This projects implements a simulator to write out the Patricia Tree, represented in this paper [*Fast Mergeable Integer Maps**][paper]
+The project implements a simulator to write out the Patricia Tree, represented in this paper [*Fast Mergeable Integer Maps**][paper]
 
 ## Build with opam
 Install opam 2.0+ and then off you go:
